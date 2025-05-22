@@ -1,585 +1,899 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>{{ user.username }} - Информация о подписке</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+<!doctype html>
+<html lang="en" data-bs-theme="system">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Инструкция по настройке">
+    <meta name="theme-color" content="#fff">
+    <title>VPN для {{ user.username.split('_')[-1] }}</title>
+    <link href="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH">
     <style>
-        /* Небольшие дополнительные стили для центрирования и отступов */
-        body {
-            background-color: #f8f9fa; /* Светлый фон для контраста */
+      .my-align-items-center {
+  display: flex; /* flexbox нужен для работы align-items */
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+      .bi {
+        width: 1em;
+        height: 1em;
+        vertical-align: -.125em;
+        fill: currentcolor;
+      }
+      
+      .tab-pane {
+        counter-reset: guide-step 0;
+      }
+      
+      .my-block {
+        padding: 1rem;
+      }
+      
+      .my-block-big {
+        padding: 1.5rem;
+        padding-top: .5rem;
+      }
+      
+      .my-block, .my-block-big {
+        border-radius: var(--bs-border-radius-xl);
+      }
+      
+      .my-btn {
+        --bs-btn-bg: rgba(35, 131, 226, .15);
+        --bs-btn-color: #2383e2;
+        --bs-btn-hover-bg: rgba(35, 131, 226, .2);
+        --bs-btn-hover-border-color: transparent;
+        --bs-btn-hover-color: #2383e2;
+        --bs-btn-active-bg: rgba(35, 131, 226, .25);
+        --bs-btn-active-border-color: transparent;
+        --bs-btn-active-color: #2383e2;
+        --bs-btn-border-radius: var(--bs-border-radius-xl);
+        --bs-btn-focus-shadow-rgb: 35, 131, 226;
+        --bs-btn-font-weight: 600;
+      }
+      
+      .my-color-green {
+        color: #1aad3a;
+      }
+      
+      .my-color-red {
+        color: #ea4e43;
+      }
+      
+      .my-color-blue {
+        color: #0a85d1;
+      }
+      
+      .my-color-yellow {
+        color: #fb3;
+      }
+      
+      .my-container {
+        max-width: 64rem;
+      }
+      
+      .my-dropdown-menu {
+        --bs-dropdown-border-radius: var(--bs-border-radius-xl);
+        --bs-dropdown-item-padding-x: .75rem;
+        --bs-dropdown-item-padding-y: .5rem;
+        --bs-dropdown-padding-x: .35rem;
+        --bs-dropdown-padding-y: .35rem;
+      
+        li + li {
+          margin-top: .35rem;
         }
-        .container {
-            max-width: 800px; /* Ограничиваем ширину для лучшей читаемости */
-            margin-top: 2rem;
-            margin-bottom: 2rem;
+      
+        .dropdown-item {
+          border-radius: .75rem;
         }
-        .card {
-            margin-bottom: 1.5rem;
+      
+        .my-dropdown-item-check {
+          color: transparent;
         }
-        .accordion-button:not(.collapsed) {
-            background-color: #e7f1ff; /* Легкий цвет фона для активного аккордеона */
+      }
+      
+      .my-step-icon {
+        color: #57b5ef;
+        display: block;
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: .5rem;
+      
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+      
+        &::after {
+          counter-increment: guide-step;
+          content: counter(guide-step);
         }
-        .app-icon { /* Стиль для иконок приложений (если будете добавлять) */
-            width: 24px;
-            height: 24px;
-            margin-right: 8px;
+      }
+      
+      .my-toast {
+        --bs-toast-bg: #2383e2;
+        --bs-toast-border-radius: var(--bs-border-radius-xl);
+        --bs-toast-border-width: 0;
+        --bs-toast-color: #fff;
+        --bs-toast-padding-x: 1rem;
+      }
+      
+      [data-bs-theme='light'] {
+        --bs-body-bg: #fff;
+      
+        .my-block, .my-block-big {
+          background-color: #f6f5f4;
         }
-        .os-icon { /* Стиль для иконок ОС */
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            vertical-align: middle;
+      
+        .my-dropdown-menu {
+          --bs-dropdown-link-hover-bg: #f6f5f4;
+          --bs-dropdown-link-active-bg: #eaeaea;
+          --bs-dropdown-link-active-color: #000;
+      
+          .my-dropdown-item-icon, .active .my-dropdown-item-check {
+            color: rgba(0, 0, 0, .5);
+          }
         }
-        /* Цвета для прогресс-бара в зависимости от % */
-        .progress-bar.bg-success { background-color: #198754 !important; } /* < 40% */
-        .progress-bar.bg-warning { background-color: #ffc107 !important; } /* 40-80% */
-        .progress-bar.bg-danger { background-color: #dc3545 !important; }  /* > 80% */
-
-        /* Стиль для выделения рекомендуемого приложения */
-        .recommended-client {
-            font-weight: bold;
-            color: #198754; /* Зеленый цвет для акцента */
+      
+        .my-nav-link {
+          --bs-nav-link-color: rgba(var(--bs-emphasis-color-rgb), .65);
+          --bs-nav-link-hover-color: rgba(var(--bs-emphasis-color-rgb), .9);
         }
-
-        /* ---- ИЗМЕНЕНИЕ 2: Стиль для кнопок копирования ---- */
-        /* Используем btn-info для кнопок копирования, чтобы отличить их от btn-primary для добавления */
-        .btn-copy-link {
-            /* Пример: можно использовать стандартный цвет Bootstrap или задать свой */
-            /* background-color: #0dcaf0;
-            border-color: #0dcaf0;
-            color: white; */
+      }
+      
+      [data-bs-theme='dark'] {
+        --bs-body-bg: #151515;
+      
+        .my-block, .my-block-big {
+          background-color: #232323;
         }
-        /* При желании, можно добавить стили для hover/active состояния .btn-copy-link */
-
+      
+        .my-dropdown-menu {
+          --bs-dropdown-link-hover-bg: #232323;
+          --bs-dropdown-link-active-bg: #333;
+          --bs-dropdown-link-active-color: #fff;
+      
+          .my-dropdown-item-icon, .active .my-dropdown-item-check {
+            color: rgba(255, 255, 255, .5);
+          }
+        }
+      
+        .my-nav-link {
+          --bs-nav-link-color: rgba(var(--bs-emphasis-color-rgb), .65);
+          --bs-nav-link-hover-color: rgba(var(--bs-emphasis-color-rgb), .9);
+        }
+      }
     </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title mb-3">
-                Данные пользователя {{ user.username }}
-            </h5>
-            <p><strong>Статус:</strong>
-                <span id="user-status-badge" class="badge">Загрузка...</span>
-            </p>
-            <p><strong>Срок действия:</strong> <span id="expire-date">Загрузка...</span></p>
-            <p><strong>Осталось дней:</strong> <span id="remaining-days">{% if not user.expire %}∞{% else %}{% set remaining_days = ((user.expire - now().timestamp()) // (24 * 3600)) %}{{ remaining_days | int if (remaining_days | int) > -1 else 0 }}{% endif %}</span></p>
-            <p id="reset-info" class="text-muted small">Загрузка...</p>
-
-            <h6 class="mt-4">Использование трафика:</h6>
-            <div class="progress" role="progressbar" aria-label="Data usage" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 25px;">
-                <div id="data-usage-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
-            </div>
-            <p class="mt-2 text-center">
-                <span id="traffic-usage-text">Использовано: {{ user.used_traffic | bytesformat }} / {% if not user.data_limit %}∞{% else %}{{ user.data_limit | bytesformat }}{% endif %}</span>
-            </p>
-        </div>
-    </div>
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title mb-3">VPN Клиенты и Настройка</h5>
-
-            <p><strong>Настройка VPN выполняется в два простых шага:</strong></p>
-            <ol>
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      <!-- Icons from https://icons.getbootstrap.com -->
+      <symbol id="android" viewBox="0 0 16 16">
+        <path d="M2.76 3.061a.5.5 0 0 1 .679.2l1.283 2.352A8.9 8.9 0 0 1 8 5a8.9 8.9 0 0 1 3.278.613l1.283-2.352a.5.5 0 1 1 .878.478l-1.252 2.295C14.475 7.266 16 9.477 16 12H0c0-2.523 1.525-4.734 3.813-5.966L2.56 3.74a.5.5 0 0 1 .2-.678ZM5 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2m6 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+      </symbol>
+      <symbol id="apple" viewBox="0 0 16 16">
+        <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/>
+      </symbol>
+      <symbol id="arrow-down-up" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5"/>
+      </symbol>
+      <symbol id="arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+      </symbol>
+      <symbol id="calendar3" viewBox="0 0 16 16">
+        <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+        <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+      </symbol>
+      <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+      </symbol>
+      <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16"/>
+      </symbol>
+      <symbol id="emoji-frown-fill" viewBox="0 0 16 16">
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m-2.715 5.933a.5.5 0 0 1-.183-.683A4.5 4.5 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.5 3.5 0 0 0 8 10.5a3.5 3.5 0 0 0-3.032 1.75.5.5 0 0 1-.683.183M10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8"/>
+      </symbol>
+      <symbol id="emoji-smile-fill" viewBox="0 0 16 16">
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8"/>
+      </symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"/>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
+      </symbol>
+      <symbol id="pc-display" viewBox="0 0 16 16">
+        <path d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4q0 1 .25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75Q6 13 6 12H2s-2 0-2-2zm1.398-.855a.76.76 0 0 0-.254.302A1.5 1.5 0 0 0 1 4.01V10c0 .325.078.502.145.602q.105.156.302.254a1.5 1.5 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.76.76 0 0 0 .254-.302 1.5 1.5 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.76.76 0 0 0-.302-.254A1.5 1.5 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145"/>
+      </symbol>
+      <symbol id="repeat" viewBox="0 0 16 16">
+        <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+      </symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+      </symbol>
+      <symbol id="translate" viewBox="0 0 16 16">
+        <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286zm1.634-.736L5.5 3.956h-.049l-.679 2.022z"/>
+        <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm7.138 9.995q.289.451.63.846c-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6 6 0 0 1-.415-.492 2 2 0 0 1-.94.31"/>
+      </symbol>
+    </svg>
+    <div class="container my-container py-3" x-data>
+      <header class="d-flex flex-wrap align-items-center gap-2 mb-5">
+        <!-- <img src="https://raw.githubusercontent.com/orkhv/marzbanify-template/refs/heads/main/img/favicon-32x32.png" class="me-auto" alt="Logo" width="32" height="32"> -->
+        <!-- <ul class="nav align-items-center"> -->
+          <ul class="nav my-align-items-center">
+          <li class="nav-item">
+            <a class="nav-link my-nav-link fw-semibold px-2" href="https://t.me/quantum_vault_support_bot" rel="noopener noreferrer" target="_blank" x-text="$t('support')"></a>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button class="nav-link my-nav-link dropdown-toggle d-flex align-items-center px-2" id="btn-theme" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg class="bi my-dropdown-icon-active fs-5"><use href="#sun"></use></svg>
+              </button>
+              <ul class="dropdown-menu my-dropdown-menu">
                 <li>
-                    <strong>Скачайте VPN-приложение (клиент).</strong><br>
-                    Выберите приложение для вашей операционной системы (Windows, iOS, Android, macOS). Мы отметили <span class="recommended-client">рекомендуемые</span> варианты, но вы можете выбрать любое другое из списка. Нажмите кнопку "Загрузить" (или "Google Play", "GitHub" и т.д.), чтобы перейти на страницу скачивания.
+                  <button class="dropdown-item active d-flex align-items-center fw-semibold" type="button" data-theme-value="system" aria-pressed="true">
+                    <svg class="bi my-dropdown-item-icon me-2"><use href="#circle-half"></use></svg>
+                    <span class="me-2" x-text="$t('system')"></span>
+                    <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+                  </button>
                 </li>
                 <li>
-                    <strong>Добавьте вашу подписку в приложение.</strong><br>
-                    Рядом со ссылкой на скачивание есть кнопка для добавления подписки:
-                    <ul>
-                        <li><strong class="text-primary">"Добавить подписку"</strong> (синяя кнопка): Просто нажмите на эту кнопку. Если приложение установлено, оно должно открыться и автоматически добавить настройки.</li>
-                        <li><strong class="text-info">"Копировать ссылку"</strong> (голубая кнопка): Некоторые приложения не поддерживают автоматическое добавление. Нажмите эту кнопку, чтобы скопировать специальную ссылку. Затем откройте скачанное приложение и найдите в нем опцию типа "Импорт из буфера обмена", "Добавить подписку по ссылке" или "Import profile from URL" и вставьте туда скопированную ссылку.</li>
-                    </ul>
-                    Вы также можете использовать QR-код (кнопка ниже) для добавления подписки в мобильные приложения, если они поддерживают сканирование QR.
+                  <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-theme-value="light" aria-pressed="false">
+                    <svg class="bi my-dropdown-item-icon me-2"><use href="#sun-fill"></use></svg>
+                    <span class="me-2" x-text="$t('light')"></span>
+                    <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+                  </button>
                 </li>
-            </ol>
-            <p>После добавления подписки вы сможете подключаться к VPN через это приложение.</p>
-            <div class="accordion" id="vpnClientsAccordion">
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingIos">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIos" aria-expanded="false" aria-controls="collapseIos">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/mac-os.png" alt="iOS" class="os-icon"/>
-                            iOS
-                        </button>
-                    </h2>
-                    <div id="collapseIos" class="accordion-collapse collapse" aria-labelledby="headingIos" data-bs-parent="#vpnClientsAccordion">
-                        <div class="accordion-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div><span class="recommended-client">Streisand</span> (рекомендуется)</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://apps.apple.com/us/app/streisand/id6450534064" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить</a>
-                                        <a id="ios-streisand-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>V2Box</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить</a>
-                                        <a id="ios-v2box-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>Sing-Box</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://apps.apple.com/us/app/sing-box/id6451272673" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить</a>
-                                        <a id="ios-singbox-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>Shadowrocket</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить</a>
-                                        <a id="ios-shadowrocket-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>foXray</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://apps.apple.com/us/app/foxray/id6448898396" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить</a>
-                                        <a id="ios-foxray-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingAndroid">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAndroid" aria-expanded="false" aria-controls="collapseAndroid">
-                            <img src="https://img.icons8.com/material-outlined/24/000000/android-os.png" alt="Android" class="os-icon"/>
-                            Android
-                        </button>
-                    </h2>
-                    <div id="collapseAndroid" class="accordion-collapse collapse" aria-labelledby="headingAndroid" data-bs-parent="#vpnClientsAccordion">
-                        <div class="accordion-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div><span class="recommended-client">v2rayNG</span> (рекомендуется)</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://play.google.com/store/apps/details?id=com.v2ray.ang" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Google Play</a>
-                                        <a href="https://github.com/2dust/v2rayNG/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">GitHub (APK)</a>
-                                        <a id="android-v2rayng-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>NekoBox</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://github.com/MatsuriDayo/NekoBoxForAndroid/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">GitHub (APK)</a>
-                                        <a id="android-nekobox-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>Sing-Box</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://play.google.com/store/apps/details?id=io.nekohasekai.sfa" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Google Play</a>
-                                        <a href="https://github.com/SagerNet/sing-box/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Github (APK)</a>
-                                        <a id="android-singbox-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingWindows">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWindows" aria-expanded="false" aria-controls="collapseWindows">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/windows-logo.png" alt="Windows" class="os-icon"/>
-                            Windows
-                        </button>
-                    </h2>
-                    <div id="collapseWindows" class="accordion-collapse collapse" aria-labelledby="headingWindows" data-bs-parent="#vpnClientsAccordion">
-                        <div class="accordion-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div><span class="recommended-client">Hiddify</span> (рекомендуется)</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://github.com/hiddify/hiddify-next/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить (GitHub)</a>
-                                        <a id="windows-hiddify-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>v2rayN</div>
-                                    <div class="mt-2 mt-sm-0 text-sm-end">
-                                        <a href="https://github.com/2dust/v2rayN/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить (GitHub)</a>
-                                        <button onclick="copyToClipboard(fullUrl, this)" class="btn btn-sm btn-info btn-copy-link mb-1 mb-sm-0">Копировать ссылку</button>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>NekoRay</div>
-                                    <div class="mt-2 mt-sm-0 text-sm-end">
-                                        <a href="https://github.com/MatsuriDayo/nekoray/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить (GitHub)</a>
-                                        <button onclick="copyToClipboard(fullUrl, this)" class="btn btn-sm btn-info btn-copy-link mb-1 mb-sm-0">Копировать ссылку</button>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex flex-column align-items-start flex-sm-row align-items-sm-center justify-content-sm-between">
-                                    <div>Clash Verge</div>
-                                    <div class="mt-2 mt-sm-0">
-                                        <a href="https://github.com/zzzgydi/clash-verge/releases" target="_blank" class="btn btn-sm btn-outline-secondary me-2 mb-1 mb-sm-0">Загрузить (GitHub)</a>
-                                        <a id="windows-clashverge-add" href="#" class="btn btn-sm btn-primary mb-1 mb-sm-0">Добавить подписку</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingMacOs">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMacOs" aria-expanded="false" aria-controls="collapseMacOs">
-                            <img src="https://img.icons8.com/ios-filled/50/000000/mac-os.png" alt="macOS" class="os-icon"/>
-                            macOS
-                        </button>
-                    </h2>
-                    <div id="collapseMacOs" class="accordion-collapse collapse" aria-labelledby="headingMacOs" data-bs-parent="#vpnClientsAccordion">
-                        <div class="accordion-body">
-                            <p class="text-muted">
-                                Для macOS рекомендуется использовать клиенты, предназначенные для <strong>iOS</strong> (например, <span class="recommended-client">Streisand</span> или V2Box), особенно если ваш Mac работает на процессоре Apple Silicon (M1/M2/M3 и новее). Вы можете найти их в секции iOS выше.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <li>
+                  <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-theme-value="dark" aria-pressed="false">
+                    <svg class="bi my-dropdown-item-icon me-2"><use href="#moon-stars-fill"></use></svg>
+                    <span class="me-2" x-text="$t('dark')"></span>
+                    <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+                  </button>
+                </li>
+              </ul>
             </div>
-        </div>
-    </div>
-
-    <div class="card shadow-sm">
-        <div class="card-body text-center">
-            <h5 class="card-title mb-3">Ссылка подписки</h5>
-            <p class="text-muted small">Может потребоваться для ручного добавления (см. Шаг 2 в инструкции выше).</p>
-            <div class="input-group mb-3">
-                <input type="text" id="subLinkInput" class="form-control" value="" readonly>
-                <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard(fullUrl, this)">Копировать</button>
+          </li>
+          <li class="nav-item">
+            <div class="dropdown">
+              <button class="nav-link my-nav-link dropdown-toggle d-flex align-items-center px-2" id="btn-lang" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg class="bi fs-5"><use href="#translate"></use></svg>
+              </button>
+              <ul class="dropdown-menu my-dropdown-menu">
+                <li>
+                  <button class="dropdown-item active d-flex align-items-center fw-semibold" type="button" data-language-value="en" aria-pressed="true">
+                    <span class="me-2">English</span>
+                    <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-language-value="ru" aria-pressed="false">
+                    <span class="me-2">Русский</span>
+                    <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+                  </button>
+                </li>
+              </ul>
             </div>
-            <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#qrModal">
-                Показать QR-код
-            </button>
-        </div>
-    </div>
-
-    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="qrModalLabel">QR-код подписки</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <div id="qrcode" class="d-inline-block p-2 bg-white rounded"></div>
-                </div>
+          </li>
+        </ul>
+      </header>
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <!-- <span class="fs-3 fw-bold me-auto" x-text="$t('subscription')"></span> -->
+        <!-- <span class="fs-3 fw-bold me-auto" >VPN для {{ user.username }}</span> -->
+        <span class="fs-3 fw-bold me-auto">VPN для {{ user.username.split('_')[-1] }}</span>
+        <button class="btn my-btn" id="btn-copy-link" type="button" x-text="$t('copyLink')"></button>
+        <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+          <div class="toast my-toast" id="toast-copy-link" role="alert" aria-atomic="true" aria-live="assertive">
+            <div class="d-flex">
+              <div class="toast-body fs-6 fw-semibold">
+                <span x-text="$t('copiedToClipboard')"></span>
+              </div>
+              <button type="button" class="btn-close btn-close-white m-auto me-3" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
+          </div>
         </div>
+      </div>
+      <div class="row row-cols-2 row-cols-sm-4 g-3 mb-5">
+        <div class="col">
+          <div class="my-block d-flex flex-column h-100">
+            {% if user.status.value == 'active' %}
+            <svg class="bi my-color-green fs-4 mb-2"><use href="#emoji-smile-fill"></use></svg>
+            {% else %}
+            <svg class="bi my-color-red fs-4 mb-2"><use href="#emoji-frown-fill"></use></svg>
+            {% endif %}
+            <span class="fs-5 fw-bold" x-text="$t('status')"></span>
+            <!-- <span class="fs-5 fw-bold" >{{ user.username }}</span> -->
+            {% if user.status.value == 'active' %}
+            <span class="fw-semibold" x-text="$t('active')"></span>
+            {% elif user.status.value == 'limited' %}
+            <span class="fw-semibold" x-text="$t('limited')"></span>
+            {% elif user.status.value == 'expired' %}
+            <span class="fw-semibold" x-text="$t('expired')"></span>
+            {% elif user.status.value == 'disabled' %}
+            <span class="fw-semibold" x-text="$t('disabled')"></span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col">
+          <div class="my-block d-flex flex-column h-100">
+            <svg class="bi my-color-red fs-4 mb-2"><use href="#calendar3"></use></svg>
+            <span class="fs-5 fw-bold" x-text="$t('duration')"></span>
+            {% if not user.expire %}
+            <span class="fw-semibold" x-text="$t('forever')"></span>
+            {% else %}
+            <!-- Can it be done better? -->
+            {% set date = (user.expire | datetime).split()[0].split('-')[::-1] %}
+            <span class="fw-semibold">
+              <span x-text="$t('until')"></span>
+              {{ '.'.join(date) }}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <span class="fs-3 fw-bold me-auto" x-text="$t('guide')"></span>
+        <div class="dropdown">
+          <button class="nav-link my-nav-link dropdown-toggle d-flex align-items-center" id="btn-guide" type="button" data-bs-toggle="dropdown">
+            <svg class="bi my-dropdown-icon-active fs-5 me-2"><use href="#pc-display"></use></svg>
+            <span class="my-dropdown-text-active fw-semibold"></span>
+          </button>
+          <ul class="dropdown-menu my-dropdown-menu" role="tablist">
+            <li>
+              <button class="dropdown-item active d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-pc" data-bs-toggle="tab" role="tab" aria-controls="tab-pc" aria-selected="true">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#pc-display"></use></svg>
+                <span class="me-2" x-text="$t('pc')"></span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-android" data-bs-toggle="tab" role="tab" aria-controls="tab-android" aria-selected="false">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#android"></use></svg>
+                <span class="me-2">Android</span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-ios" data-bs-toggle="tab" role="tab" aria-controls="tab-ios" aria-selected="false">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#apple"></use></svg>
+                <span class="me-2">iOS</span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-macm" data-bs-toggle="tab" role="tab" aria-controls="tab-macm" aria-selected="false">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#apple"></use></svg>
+                <span class="me-2">MacOS</span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center fw-semibold" type="button" data-bs-target="#tab-macintel" data-bs-toggle="tab" role="tab" aria-controls="tab-macintel" aria-selected="false">
+                <svg class="bi my-dropdown-item-icon me-2"><use href="#apple"></use></svg>
+                <span class="me-2">MacOS intel</span>
+                <svg class="bi my-dropdown-item-check ms-auto"><use href="#check2"></use></svg>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-content" role="tablist">
+        <div id="tab-pc" class="tab-pane fade show active" aria-labelledby="Guide for PC" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.pc.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.pc.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://github.com/hiddify/hiddify-app/releases/latest/download/Hiddify-Windows-Setup-x64.Msix" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.pc.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.pc.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="hiddify://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.pc.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.pc.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-android" class="tab-pane fade" aria-labelledby="Guide for Android" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.android.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.android.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://play.google.com/store/apps/details?id=com.v2ray.ang" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.android.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.android.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="v2rayng://install-config?url={{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.android.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.android.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-ios" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.ios.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.ios.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/streisand/id6450534064" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.ios.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.ios.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="streisand://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.ios.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.ios.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-macm" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macm.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macm.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/streisand/id6450534064" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macm.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macm.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="streisand://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macm.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.macm.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-macintel" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macintel.first.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macintel.first.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/v2box-v2ray-client/id6446814690" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('openPage')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macintel.second.title')"></h4>
+                <p class="fw-semibold" x-text="$t('guideContent.macintel.second.subtitle')"></p>
+                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="v2box://install-sub?url={{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+                </a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="my-block-big h-100">
+                <span class="my-step-icon"></span>
+                <h4 class="fw-bold" x-text="$t('guideContent.macintel.third.title')"></h4>
+                <span class="fw-semibold" x-text="$t('guideContent.macintel.third.subtitle')"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
-<script>
-    // ----- Инициализация переменных из шаблона Marzban -----
-    const subUrlRaw = "{{ user.subscription_url }}";
-    // Формируем полную URL подписки, если она относительная
-    let fullUrl = subUrlRaw;
-    try {
-        // Пытаемся создать URL, чтобы проверить валидность и получить origin
-        new URL(subUrlRaw); // Если subUrlRaw уже абсолютный, это не вызовет ошибку
-        fullUrl = subUrlRaw;
-    } catch (_) {
-        // Если subUrlRaw относительный, создаем абсолютный
-        if (!subUrlRaw.startsWith("http")) {
-            const baseUrl = window.location.origin;
-            const path = subUrlRaw.startsWith('/') ? subUrlRaw.substring(1) : subUrlRaw;
-            fullUrl = `${baseUrl}/${path}`;
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs-i18n@2.x.x/dist/cdn.min.js"></script>
+    <script>
+      const META_THEME_COLORS = {light: '#fff', dark: '#151515'};
+      const MESSAGES = {
+        en: {
+          support: 'Support',
+          system: 'System',
+          light: 'Light',
+          dark: 'Dark',
+          status: 'Status',
+          active: 'Active',
+          limited: 'Limited',
+          expired: 'Expired',
+          disabled: 'Disabled',
+          duration: 'Duration',
+          until: 'Until',
+          forever: 'Forever',
+          traffic: 'Traffic',
+          of: 'of',
+          trafficReset: 'Traffic Reset',
+          no: 'No',
+          daily: 'Daily',
+          weekly: 'Weekly',
+          monthly: 'Monthly',
+          yearly: 'Yearly',
+          subscription: 'Subscription',
+          copyLink: 'Copy link',
+          copiedToClipboard: 'Copied to clipboard',
+          pc: 'PC',
+          openPage: 'Open page',
+          addSubscription: 'Add subscription',
+          guideContent: {
+            pc: {
+              first: {
+                title: 'Install and open Hiddify',
+                subtitle: `Go to the latest release page on GitHub. Download the
+                file for your OS and install the app. Launch it, select the «Russia»
+                region (in the startup window or settings), then press «Start».`,
+              },
+              second: {
+                title: 'Add the subscription',
+                subtitle: `Press the button below — the app will open, and the
+                subscription will be added automatically. If this doesn’t happen,
+                close the app and try again, or add the subscription manually using
+                the «+» button in the top right corner.`,
+              },
+              third: {
+                title: 'Connect and enjoy',
+                subtitle: `On the main page, press the large power button in the
+                center to connect to the VPN. If needed, choose a different server on
+                the proxy page. Enjoy :)`,
+              },
+            },
+            android: {
+              first: {
+                title: 'Install and open Hiddify',
+                subtitle: `Open the page in Google Play and install the app. Launch
+                it, select the «Russia» region (in the startup window or in
+                settings), then press «Start».`,
+              },
+              second: {
+                title: 'Add the subscription',
+                subtitle: `Press the button below — the app will open, and the
+                subscription will be added automatically. If this doesn’t happen,
+                close the app and try again, or add the subscription manually using
+                the «+» button in the top right corner.`,
+              },
+              third: {
+                title: 'Connect and enjoy',
+                subtitle: `On the main page, press the large power button in the
+                center to connect to the VPN. If needed, choose a different server by
+                tapping on the «>» icon at the bottom. Enjoy :)`,
+              },
+            },
+            ios: {
+              first: {
+                title: 'Install and open Hiddify',
+                subtitle: `Open the page in the App Store and install the app. Launch
+                the app, tap «Allow» in the VPN configuration permission window,
+                and enter your passcode. In the startup screen (or in settings, if
+                you missed it), select the «Russia» region, then tap «Start».`,
+              },
+              second: {
+                title: 'Add the subscription',
+                subtitle: `Tap the button below and in the pop-up window, tap «Open»
+                — the app will open, and the subscription will be added
+                automatically. If this doesn’t happen, close the app and try again,
+                or manually add the subscription using the «+» button in the top
+                right corner.`,
+              },
+              third: {
+                title: 'Connect and enjoy',
+                subtitle: `On the main page, press the large power button in the
+                center to connect to the VPN. If needed, choose a different server by
+                tapping on the «>» icon at the bottom. Enjoy :)`,
+              },
+            },
+          },
+        },
+        ru: {
+          support: 'Поддержка',
+          system: 'Системная',
+          light: 'Светлая',
+          dark: 'Темная',
+          status: 'Статус',
+          active: 'Активна',
+          limited: 'Ограничена',
+          expired: 'Истекла',
+          disabled: 'Отключена',
+          duration: 'Срок',
+          until: 'До',
+          forever: 'Навсегда',
+          traffic: 'Трафик',
+          of: 'из',
+          trafficReset: 'Сброс трафика',
+          no: 'Нет',
+          daily: 'Ежедневно',
+          weekly: 'Еженедельно',
+          monthly: 'Ежемесячно',
+          yearly: 'Ежегодно',
+          subscription: 'Подписка',
+          copyLink: 'Скопировать ссылку',
+          copiedToClipboard: 'Скопировано в буфер обмена',
+          guide: 'Инструкция',
+          guidemy: {
+            android: {
+              content: 'Инструкция для Android',
+            },
+            ios: {
+              content: 'Инструкция для iOS',
+            },
+            macm: {
+              content: 'Инструкция для MacOS на M',
+            },
+            macintel: {
+              content: 'Инструкция для MacOS на M',
+            },
+            pc: {
+              content: 'Инструкция для PC',
+            },
+    },
+          pc: 'ПК',
+          openPage: 'Открыть страницу',
+          addSubscription: 'Добавить VPN',
+          guideContent: {
+            pc: {
+              first: {
+                title: 'Установите и откройте Hiddify',
+                subtitle: `Скачайте файл и установите приложение. Запустите его, выбери регион «Россия» (в стартовом окне или в настройках), затем нажми «Старт».`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN добавится автоматически. Если этого не произошло, закройте приложение и попробуйте снова или скопируйте ссылку и добавьте вручную через «+» в правом верхнем углу.`,
+              },
+              third: {
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице нажмите большую кнопку включения в центре для подключения к VPN. При необходимости выбери другой сервер на странице прокси. Пользуйтесь :)`,
+              },
+            },
+            android: {
+              first: {
+                title: 'Установите и откройте v2rayNG',
+                subtitle: `Перейдите в Google Play и скачайте приложение v2rayNG.`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN
+                добавится автоматически. Если этого не произошло, закройте приложение
+                и попробуйте снова или скопируйте ссылку и добавьте вручную через «+» в правом
+                верхнем углу.`,
+              },
+              third: {
+                title: 'Обновите VPN',
+                subtitle: `В правом
+                верхнем углу нажмите на три точки. В появившемся меню нажмите «Обновить подписку группы». Пользуйся :)`,
+              },
+            },
+            ios: {
+              first: {
+                title: 'Установите Streisand',
+                subtitle: `Перейдите в AppStore и скачай приложение Streisand.`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN добавится автоматически. Если этого не произошло, попробуйте снова или скопируйте ссылку, и добавьте вручную через «+» в правом
+                верхнем углу.`,
+              },
+              third: {
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице приложения Streisand нажмите большую синюю кнопку для подключения к VPN. Пользуйтесь :)`,
+              },
+            },
+            macm: {
+              first: {
+                title: 'Установите Streisand',
+                subtitle: `Перейдите в AppStore и скачайте приложение Streisand.`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN
+                добавится автоматически. Если этого не произошло, попробуйте снова или скопируйте ссылку и добавьте вручную «+» в правом
+                верхнем углу.`,
+              },
+              third: {
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице приложения Streisand нажмите большую синюю кнопку для подключения к VPN. Пользуйтесь :)`,
+              },
+            },
+            macintel: {
+              first: {
+                title: 'Установите и откройте V2box',
+                subtitle: `Для MAC на процессорах Intel перейдите в AppStore, скачайте приложение V2box.`,
+              },
+              second: {
+                title: 'Добавьте VPN',
+                subtitle: `Нажмите кнопку ниже — приложение откроется, и VPN добавится автоматически. Если этого не произошло, скопируйте ссылку и добавьте вручную через «+» в правом верхнем углу. Нужно нажать на первую строчку "import"`,
+              },
+              third: {
+                title: 'Подключитесь и пользуйтесь',
+                subtitle: `На главной странице нажмите большую кнопку включения в центре для подключения к VPN. При необходимости выбери другой сервер на странице прокси. Пользуйтесь :)`,
+              },
+            },
+          },
+        },
+      };
+      
+      function getPreferredGuideTab() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes('android')) {
+        return '#tab-android';
+    } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+        return '#tab-ios';
+    } else if (userAgent.includes('macintosh')) {
+        return '#tab-macm';
+    } else {
+        return '#tab-pc';
+    }
+}
+      
+      function getPreferredLanguage() {
+        return (
+          localStorage.getItem('language') ||
+          (navigator.language || navigator.userLanguage).slice(0, 2)
+        );
+      }
+      
+      function getPreferredTheme() {
+        return localStorage.getItem('theme') || 'system';
+      }
+      
+      function setTheme(theme) {
+        if (theme === 'system') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
         }
-    }
-
-
-    const dataLimitBytes = {% if not user.data_limit %}0{% else %}{{ user.data_limit }}{% endif %}; // В байтах
-    const dataUsedBytes = {{ user.used_traffic }}; // В байтах
-    const userStatus = '{{ user.status.value }}'; // 'active', 'limited', 'expired', 'disabled'
-    const expireTimestamp = {% if not user.expire %}null{% else %}{{ user.expire }}{% endif %}; // Unix timestamp
-    const resetStrategy = '{{ user.data_limit_reset_strategy.value }}'; // 'no_reset', 'day', 'week', 'month', 'year'
-    const username = '{{ user.username | urlencode }}'; // Получаем имя пользователя и кодируем его для URL
-
-    // ----- Функции -----
-
-    function formatBytes(bytes, decimals = 2) {
-        if (bytes === null || typeof bytes === 'undefined' || bytes < 0) return '0 Bytes';
-        if (bytes === 0) return '0 Bytes';
-
-        const k = 1024;
-        const dm = decimals < 0 ? 0 : decimals;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-        // Добавим проверку на NaN и Infinity
-        const value = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
-        if (isNaN(value) || !isFinite(value)) return '0 Bytes';
-
-        return `${value} ${sizes[i]}`;
-    }
-
-
-    function copyToClipboard(textToCopy, buttonElement) {
-        if (!textToCopy || !buttonElement) return;
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const originalText = buttonElement.innerHTML;
-            const originalClasses = buttonElement.className;
-            buttonElement.textContent = 'Скопировано!';
-            // Заменяем классы, чтобы быть уверенными в результате (учитываем и -info, и -outline-secondary)
-            buttonElement.className = originalClasses.replace(/btn-(info|outline-secondary)/g, 'btn-success');
-            buttonElement.disabled = true; // Блокируем кнопку на время
-
-            setTimeout(() => {
-                buttonElement.innerHTML = originalText;
-                buttonElement.className = originalClasses;
-                buttonElement.disabled = false; // Разблокируем кнопку
-            }, 2000);
-        }).catch(err => {
-            console.error('Ошибка копирования: ', err);
-            // Можно показать временное сообщение об ошибке на кнопке
-            const originalText = buttonElement.innerHTML;
-            const originalClasses = buttonElement.className;
-            buttonElement.textContent = 'Ошибка!';
-            buttonElement.className = originalClasses.replace(/btn-(info|outline-secondary)/g, 'btn-danger');
-            buttonElement.disabled = true;
-            setTimeout(() => {
-                buttonElement.innerHTML = originalText;
-                buttonElement.className = originalClasses;
-                buttonElement.disabled = false;
-            }, 2000);
+      
+        document.documentElement.setAttribute('data-bs-theme', theme);
+        document
+          .querySelector(`[name='theme-color']`)
+          .setAttribute('content', META_THEME_COLORS[theme]);
+      }
+      
+      function showActiveDropdownButton(btn, selectedBtn, isIndependent) {
+        // Change dropdowns that can't be changed because
+        // they don't depend on Bootstrap.
+        if (isIndependent) {
+          const activeDropdownBtn = btn.nextElementSibling.querySelector('.active');
+          if (activeDropdownBtn) {
+            activeDropdownBtn.classList.remove('active');
+            activeDropdownBtn.setAttribute('aria-pressed', 'false');
+          }
+          
+          selectedBtn.classList.add('active');
+          selectedBtn.setAttribute('aria-pressed', 'true');
+        }
+      
+        const btnIcon = btn.querySelector('.my-dropdown-icon-active use');
+        const selectedBtnIcon = selectedBtn.querySelector('svg use');
+        if (btnIcon && selectedBtnIcon) {
+          btnIcon.setAttribute('href', selectedBtnIcon.getAttribute('href'));
+        }
+      
+        const btnText = btn.querySelector('.my-dropdown-text-active');
+        const selectedBtnText = selectedBtn.querySelector('span');
+        if (btnText && selectedBtnText) {
+          selectedBtnText.classList.remove('me-2');
+          btnText.innerHTML = selectedBtnText.outerHTML;
+        }
+      }
+      
+      document.addEventListener('alpine-i18n:ready', () => {
+        window.AlpineI18n.fallbackLocale = 'en';
+        window.AlpineI18n.create(getPreferredLanguage(), MESSAGES);
+      
+        const btnLang = document.getElementById('btn-lang');
+        const btnPrefLang = document.querySelector(
+          `[data-language-value="${getPreferredLanguage()}"]`,
+        );
+        showActiveDropdownButton(btnLang, btnPrefLang, true);
+        document.querySelectorAll('[data-language-value]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            localStorage.setItem('language', btn.dataset.languageValue);
+            AlpineI18n.locale = btn.dataset.languageValue;
+            showActiveDropdownButton(btnLang, btn, true);
+          });
         });
-    }
-
-
-    function setSubscriptionLinks() {
-        try {
-            const encodedFullUrlBase64 = btoa(fullUrl);
-            const encodedFullUrlComponent = encodeURIComponent(fullUrl); // URL-кодированная версия
-
-            // iOS
-            safeSetHref("ios-streisand-add", `streisand://import/${fullUrl}`);
-            safeSetHref("ios-v2box-add", `v2box://install-sub?url=${encodedFullUrlComponent}&name=${username}`);
-            safeSetHref("ios-singbox-add", `sing-box://import-remote-profile?url=${encodedFullUrlComponent}#${username}`);
-            safeSetHref("ios-shadowrocket-add", `sub://${encodedFullUrlBase64}`);
-            safeSetHref("ios-foxray-add", `foxray://yiguo.dev/sub/add/?url=${encodedFullUrlBase64}#${username}`);
-
-            // Android
-            safeSetHref("android-v2rayng-add", `v2rayng://install-sub?url=${encodedFullUrlComponent}&name=${username}`);
-            safeSetHref("android-nekobox-add", `nekobox://install-sub?url=${encodedFullUrlComponent}&name=${username}`);
-            safeSetHref("android-singbox-add", `sing-box://import-remote-profile?url=${encodedFullUrlComponent}#${username}`);
-
-            // Windows
-            safeSetHref("windows-hiddify-add", `hiddify://import/${fullUrl}`);
-            safeSetHref("windows-clashverge-add", `clash://install-config?url=${encodedFullUrlComponent}`);
-            // Для v2rayN и NekoRay кнопки копирования обрабатываются через onclick="copyToClipboard(fullUrl, this)" в HTML
-
-            // ---- ИЗМЕНЕНИЕ 1: Удалили JS код для macOS ----
-            // safeSetHref("macos-clashverge-add", `clash://install-config?url=${encodedFullUrlComponent}`);
-            // safeSetHref("macos-hiddify-add", `hiddify://import/${fullUrl}`);
-            // Для NekoRay и Sing-Box GUI кнопки копирования обрабатывались через onclick, их HTML удален
-
-        } catch (error) {
-            console.error("Ошибка при кодировании URL или установке ссылок:", error);
-            alert("Не удалось сформировать ссылки для добавления подписки.");
-        }
-    }
-
-    // Вспомогательная функция для безопасной установки href
-    function safeSetHref(elementId, url) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.href = url;
-        } else {
-            // Теперь это ожидаемо для удаленных элементов macOS, поэтому меняем на console.log или убираем вовсе
-            // console.warn(`Элемент с ID "${elementId}" не найден.`);
-            // console.log(`Элемент с ID "${elementId}" не найден (возможно, удален, например, для macOS).`);
-        }
-    }
-
-
-    function updateUserInfo() {
-        // Статус
-        const statusBadge = document.getElementById('user-status-badge');
-        if(statusBadge) {
-            let statusText = 'Неизвестно';
-            let badgeClass = 'bg-secondary';
-            switch (userStatus) {
-                case 'active': statusText = 'Активен'; badgeClass = 'bg-success'; break;
-                case 'limited': statusText = 'Ограничен'; badgeClass = 'bg-warning text-dark'; break;
-                case 'expired': statusText = 'Просрочен'; badgeClass = 'bg-danger'; break;
-                case 'disabled': statusText = 'Отключен'; badgeClass = 'bg-secondary'; break;
-            }
-            statusBadge.textContent = statusText;
-            statusBadge.className = `badge ${badgeClass}`;
-        }
-
-        // Дата окончания
-        const expireDateEl = document.getElementById('expire-date');
-        if(expireDateEl) {
-            if (expireTimestamp) {
-                const date = new Date(expireTimestamp * 1000);
-                expireDateEl.textContent = date.toLocaleString('ru-RU', { dateStyle: 'long', timeStyle: 'short' });
-            } else {
-                expireDateEl.textContent = 'Бессрочно';
-            }
-        }
-
-        // Информация о сбросе
-        const resetInfoEl = document.getElementById('reset-info');
-        if (resetInfoEl) {
-            let resetText = '';
-            switch (resetStrategy) {
-                case 'day': resetText = 'Трафик сбрасывается ежедневно'; break;
-                case 'week': resetText = 'Трафик сбрасывается еженедельно'; break;
-                case 'month': resetText = 'Трафик сбрасывается ежемесячно'; break;
-                case 'year': resetText = 'Трафик сбрасывается ежегодно'; break;
-                default: resetText = 'Трафик не сбрасывается'; break;
-            }
-            resetInfoEl.textContent = (dataLimitBytes > 0) ? resetText : 'Безлимитный тариф';
-        }
-
-        // Использование трафика
-        const progressBar = document.getElementById('data-usage-bar');
-        const trafficUsageText = document.getElementById('traffic-usage-text');
-
-        if (progressBar && trafficUsageText) {
-            let usagePercent = 0;
-            let barClass = 'bg-success';
-
-            const formattedUsed = formatBytes(dataUsedBytes);
-
-            if (dataLimitBytes > 0) {
-                const formattedLimit = formatBytes(dataLimitBytes);
-                if (dataLimitBytes > 0 && dataUsedBytes >= 0) {
-                    usagePercent = Math.min(100, Math.max(0, Math.round((dataUsedBytes / dataLimitBytes) * 100)));
-                } else {
-                    usagePercent = 0;
-                }
-                if (isNaN(usagePercent)) usagePercent = 0;
-
-                if (usagePercent >= 80) {
-                    barClass = 'bg-danger';
-                } else if (usagePercent >= 40) {
-                    barClass = 'bg-warning text-dark';
-                }
-                trafficUsageText.textContent = `Использовано: ${formattedUsed} / ${formattedLimit}`;
-                progressBar.style.width = `${usagePercent}%`;
-                progressBar.setAttribute('aria-valuenow', usagePercent);
-                progressBar.textContent = `${usagePercent}%`;
-            } else {
-                usagePercent = 0;
-                barClass = 'bg-info';
-                trafficUsageText.textContent = `Использовано: ${formattedUsed} / ∞`;
-                progressBar.style.width = `100%`;
-                progressBar.setAttribute('aria-valuenow', 0);
-                progressBar.textContent = `Безлимит`;
-            }
-            progressBar.className = `progress-bar progress-bar-striped progress-bar-animated ${barClass}`;
-        }
-    }
-
-    function generateQrCode() {
-        const qrCodeElement = document.getElementById('qrcode');
-        if (!qrCodeElement) return;
-        qrCodeElement.innerHTML = '';
-        try {
-            if (typeof QRCode === 'undefined') {
-                console.error("Библиотека QRCode не загружена.");
-                qrCodeElement.textContent = "Ошибка: библиотека QR не загружена.";
-                return;
-            }
-            new QRCode(qrCodeElement, {
-                text: fullUrl,
-                width: 200,
-                height: 200,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        } catch (error) {
-            console.error("Ошибка генерации QR кода:", error);
-            qrCodeElement.textContent = "Не удалось сгенерировать QR-код.";
-        }
-    }
-
-    // ----- Выполнение при загрузке DOM -----
-    document.addEventListener('DOMContentLoaded', () => {
-        const subLinkInput = document.getElementById('subLinkInput');
-        if (subLinkInput) {
-            subLinkInput.value = fullUrl;
-        }
-
-        updateUserInfo();
-        setSubscriptionLinks();
-
-        // Открытие аккордеона для ОС пользователя
-        try {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            let targetAccordionId = null;
-            if (/android/i.test(userAgent)) {
-                targetAccordionId = "#collapseAndroid";
-            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                targetAccordionId = "#collapseIos";
-            } else if (/Win/.test(navigator.platform)) {
-                targetAccordionId = "#collapseWindows";
-            } else if (/Mac/.test(navigator.platform)) {
-                targetAccordionId = "#collapseMacOs"; // Оставляем открытие секции macOS, даже если она пустая
-            } else if (/Linux/.test(navigator.platform) && !/android/i.test(userAgent)) {
-                targetAccordionId = "#collapseWindows"; // Запасной вариант для Linux
-            }
-
-
-            if (targetAccordionId) {
-                const targetCollapseElement = document.querySelector(targetAccordionId);
-                if (targetCollapseElement && typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
-                    const currentlyShown = document.querySelector('.accordion-collapse.show');
-                    if (!currentlyShown) {
-                        const bsCollapse = bootstrap.Collapse.getOrCreateInstance(targetCollapseElement, { toggle: false });
-                        setTimeout(() => bsCollapse.show(), 150);
-                    } else if (currentlyShown !== targetCollapseElement) {
-                        const currentBsCollapse = bootstrap.Collapse.getInstance(currentlyShown);
-                        if (currentBsCollapse) currentBsCollapse.hide();
-                        const targetBsCollapse = bootstrap.Collapse.getOrCreateInstance(targetCollapseElement, { toggle: false });
-                        setTimeout(() => targetBsCollapse.show(), 150);
-                    }
-                } else if (!targetCollapseElement) {
-                    console.warn(`Элемент аккордеона ${targetAccordionId} не найден.`);
-                } else if (typeof bootstrap === 'undefined' || !bootstrap.Collapse) {
-                    console.warn('Bootstrap Collapse API не доступен.');
-                }
-            }
-        } catch (e) {
-            console.error("Ошибка при открытии аккордеона:", e);
-        }
-
-        // Инициализация QR-кода при показе модального окна
-        const qrModalElement = document.getElementById('qrModal');
-        if (qrModalElement && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-            qrModalElement.addEventListener('shown.bs.modal', generateQrCode);
-        } else if (!qrModalElement) {
-            console.warn('Модальное окно qrModal не найдено.');
-        } else {
-            console.warn('Bootstrap Modal API не доступен.');
-        }
-
-    });
-
-</script>
-
-</body>
+      });
+      
+      document.addEventListener('DOMContentLoaded', () => {
+        setTheme(getPreferredTheme());
+        window.matchMedia('(prefers-color-scheme: dark)')
+          .addEventListener('change', () => {
+            if (getPreferredTheme() === 'system') setTheme('system');
+          });
+      
+        const btnTheme = document.getElementById('btn-theme');
+        const btnPrefTheme = document.querySelector(
+          `[data-theme-value="${getPreferredTheme()}"]`,
+        );
+        showActiveDropdownButton(btnTheme, btnPrefTheme, true);
+        document.querySelectorAll('[data-theme-value]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            localStorage.setItem('theme', btn.dataset.themeValue);
+            setTheme(btn.dataset.themeValue);
+            showActiveDropdownButton(btnTheme, btn, true);
+          });
+        });
+      
+        const btnGuide = document.getElementById('btn-guide');
+        const btnPrefGuideTab = document.querySelector(
+          `[data-bs-target="${getPreferredGuideTab()}"]`,
+        );
+        bootstrap.Tab.getOrCreateInstance(btnPrefGuideTab).show();
+        showActiveDropdownButton(btnGuide, btnPrefGuideTab);
+        document.querySelectorAll('[data-bs-target]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            showActiveDropdownButton(btnGuide, btn);
+          });
+        });
+      
+        const toastCopyLink = document.getElementById('toast-copy-link');
+        document.getElementById('btn-copy-link').addEventListener('click', () => {
+          navigator.clipboard.writeText('{{ user.subscription_url }}');
+          bootstrap.Toast.getOrCreateInstance(toastCopyLink).show();
+        });
+      });
+    </script>
+  </body>
 </html>
