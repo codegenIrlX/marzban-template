@@ -444,38 +444,55 @@
             </div>
           </div>
         </div>
-        <div id="tab-ios" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-            <div class="col">
-              <div class="my-block-big h-100">
-                <span class="my-step-icon"></span>
-                <h4 class="fw-bold" x-text="$t('guideContent.ios.first.title')"></h4>
-                <p class="fw-semibold" x-text="$t('guideContent.ios.first.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/streisand/id6450534064" rel="noopener noreferrer" target="_blank">
-                  <span class="fw-semibold" x-text="$t('openPage')"></span>
-                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
-                </a>
-              </div>
-            </div>
-            <div class="col">
-              <div class="my-block-big h-100">
-                <span class="my-step-icon"></span>
-                <h4 class="fw-bold" x-text="$t('guideContent.ios.second.title')"></h4>
-                <p class="fw-semibold" x-text="$t('guideContent.ios.second.subtitle')"></p>
-                <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="streisand://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
-                  <span class="fw-semibold" x-text="$t('addSubscription')"></span>
-                  <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
-                </a>
-              </div>
-            </div>
-            <div class="col">
-              <div class="my-block-big h-100">
-                <span class="my-step-icon"></span>
-                <h4 class="fw-bold" x-text="$t('guideContent.ios.third.title')"></h4>
-                <span class="fw-semibold" x-text="$t('guideContent.ios.third.subtitle')"></span>
-              </div>
-            </div>
-          </div>
+        
+<div id="tab-ios" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+    <div class="col">
+      <div class="my-block-big h-100">
+        <span class="my-step-icon"></span>
+        <h4 class="fw-bold" x-text="$t('guideContent.ios.first.title')"></h4>
+        <p class="fw-semibold" x-text="$t('guideContent.ios.first.subtitle')"></p>
+        <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="https://apps.apple.com/ru/app/streisand/id6450534064" rel="noopener noreferrer" target="_blank">
+          <span class="fw-semibold" x-text="$t('openPage')"></span>
+          <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="my-block-big h-100">
+        <span class="my-step-icon"></span>
+        <h4 class="fw-bold" x-text="$t('guideContent.ios.second.title')"></h4>
+        <p class="fw-semibold" x-text="$t('guideContent.ios.second.subtitle')"></p>
+        <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover" href="streisand://import/{{ user.subscription_url }}" rel="noopener noreferrer" target="_blank">
+          <span class="fw-semibold" x-text="$t('addSubscription')"></span>
+          <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="my-block-big h-100">
+        <span class="my-step-icon"></span>
+        <h4 class="fw-bold">Импорт роутингов</h4>
+        <p class="fw-semibold">Нажмите кнопку ниже для импорта маршрутов (роутингов) для корректной работы VPN.</p>
+        <a class="icon-link my-color-blue link-underline link-underline-opacity-0 link-underline-opacity-50-hover"
+           href="streisand://aW1wb3J0L3JvdXRlOi8vWW5Cc2FYTjBNRERWQVFJREJBVUdEQlVXRjFWeWRXeGxjMTFrYjIxaGFXNU5ZWFJqYUdWeVZHNWhiV1ZlWkc5dFlXbHVVM1J5WVhSbFozbFVkWFZwWktJSEVkUUlDUW9MREEwT0VGMWtiMjFoYVc1TllYUmphR1Z5Vm1SdmJXRnBibEpwY0Z0dmRYUmliM1Z1WkZSaFoxWnNhVzVsWVhLZ29ROVlaMlZ2YVhBNmNuVldaR2x5WldOMDBoSUpFQk5iYjNWMFltOTFibVJVWVdlaEZGNXlaV2RsZUhBNkxpcGNMbkoxSkcwQVVnQlZBQzBBUkFCcEFISUFaUUJqQUhUWVBOMzMyRHpkK2xwSlVFOXVSR1Z0WVc1a1h4QWtOVU5CUmpGRU5rWXRPRVV3TWkwME5EUTFMVUkxTWpjdE5rVkVRVGN3TVRZNE1UVkRDQk1aSnl3N1FFTk1XbUZrY0hkNGVvT0tqNXVkck1mU0FBQUFBQUFBQVFFQUFBQUFBQUFBR0FBQUFBQUFBQUFBQUFBQUFBQUFBUGs9"
+           rel="noopener noreferrer"
+           target="_blank">
+          <span class="fw-semibold">Импорт</span>
+          <svg class="bi" aria-hidden="true"><use href="#arrow-right"></use></svg>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="my-block-big h-100">
+        <span class="my-step-icon"></span>
+        <h4 class="fw-bold" x-text="$t('guideContent.ios.third.title')"></h4>
+        <span class="fw-semibold" x-text="$t('guideContent.ios.third.subtitle')"></span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
         </div>
         <div id="tab-macm" class="tab-pane fade" aria-labelledby="Guide for iOS" role="tabpanel">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
